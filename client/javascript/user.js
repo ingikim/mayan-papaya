@@ -45,6 +45,7 @@
   app.controller('UserController', ['$scope', '$window', '$location', 'UserFactory', function($scope, $window, $location, UserFactory) {
     $scope.test = 'test';
     $scope.user = {};
+    $scope.fail = false;
     $scope.signin = function () {
       UserFactory.signin($scope.user)
         .then(function (token) {
@@ -53,7 +54,7 @@
          $location.path('/profile');
        })
        .catch(function (error) {
-          console.error(error);
+          $scope.fail = true;
         });
     };
 
@@ -65,7 +66,7 @@
           $location.path('/profile');
         })
         .catch(function (error) {
-          console.error(error);
+          $scope.fail = true;;
         });
     };
 
