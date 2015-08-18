@@ -106,7 +106,7 @@
       if(answer === question.correct) {
         $scope.correct++;
         $scope.currentStreak++;
-        $scope.score += 20;
+        $scope.score += Math.floor(Math.sqrt(+question.level) * 50 + $scope.counter);
       } else {
         $scope.currentStreak = 0;
       }
