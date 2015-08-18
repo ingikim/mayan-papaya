@@ -24,7 +24,8 @@
             class="form-control input-md"
             required class="text"
             placeholder="Password"
-            ng-model="user.password"/>
+            ng-model="user.password"
+            ng-keyup="$event.keyCode === 13 && signin()"/>
         </div>
       </div>
       <!-- signin button -->
