@@ -1,4 +1,4 @@
-
+var connection = require('../../config/connection');
 var activeCodes = {};
 
 module.exports = {
@@ -9,6 +9,10 @@ module.exports = {
 
     // Arbitrarily 1 for now; can possibly represent number of players per code
     activeCodes[code] = 1; 
+
+    // Initiate socket.io connection
+    connection.startConnection(code);
+
     res.json({code: code});
     // TODO? - setup additional game state?
   },
