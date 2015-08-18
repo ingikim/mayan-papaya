@@ -148,6 +148,18 @@
       $interval.cancel($scope.gameTimer);
     });
 
+    // Request a new game from the server;
+    // on success, we receive a code for our game room / socket namespace
+    $scope.newGame = function() {
+      return $http.get('/api/game').success(function(data) {
+
+        // TODO: handle intial game setup ...
+        // - set up socket connection?
+        // - update the view?
+      });
+
+    };
+
   }]);
 
 })();
