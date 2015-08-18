@@ -171,6 +171,7 @@
         // * set some state info that indicates that this user
         // initiated the game -> gets a start button to start gameplay
         $scope.code = data.code;
+        $scope.socket = io('/' + $scope.code);
         console.log("TriviaController: newGame " + $scope.code);
 
       });
