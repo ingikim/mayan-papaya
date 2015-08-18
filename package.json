@@ -22,7 +22,6 @@
     "bluebird": "^2.9.34",
     "body-parser": "^1.13.3",
     "bower": "^1.4.1",
-    "crypto": "0.0.3",
     "express": "^4.13.3",
     "express-partials": "^0.3.0",
     "grunt": "^0.4.5",

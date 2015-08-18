@@ -1,13 +1,29 @@
 <div class="text-center" ng-controller="TriviaController">
 
   <br>
-  <a class="play-trivia-btn btn btn-info btn-lg btn-block"
-    ui-sref=".play"
-    ng-init="clicked=false"
-    ng-click="clicked=!clicked; setCountdown(); gameDataInit()"
-    ng-show="clicked===false">
-    Play Trivia
-  </a>
+  <!-- Toggle 'clicked' on button click to hide this view and show ui-view
+  after click -->
+  <div>
+    <a class="play-trivia-btn btn btn-info btn-lg"
+      ui-sref=".startgame"
+      ng-init="clicked=false"
+      ng-click="clicked=!clicked; newGame()"
+      ng-show="clicked===false">
+      Create Game
+    </a>
+  </div>
+  <div ng-show="clicked===false">
+    <form name='gameForm' novalidate>
+      <input name='gameCode' type="number" ng-model="code"
+        placeholder="Enter Your Game Code # Here" required>
+      <a class="play-trivia-btn btn btn-info btn-lg"
+        ui-sref=".startgame"
+        ng-init="clicked=false"
+        ng-click="clicked=!clicked; joinGame()">
+        Join Game
+      </a>
+    </form>
+  </div>
 
   <div ng-show="clicked===true" ui-view></div>
 </div>
