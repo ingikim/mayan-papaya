@@ -17,7 +17,7 @@
           <div class="play-trivia-question-panel panel panel-primary">
             <div class="panel-heading">
               <h3 class="panel-title">
-                Category: Title
+                Difficulty: {{ q.level }}
               </h3>
             </div>
             <div class="panel-body">
@@ -30,8 +30,8 @@
       </div>
 
       <div class="row play-trivia-row">
-        <div class="col-md-8 col-md-offset-2">
-          <button class="btn btn-primary" ng-click="checkAnswer(q, $index)" ng-repeat="answer in q.content"> 
+        <div class="center-block">
+          <button class="btn btn-primary answer-btn center-block" ng-click="checkAnswer(q, $index)" ng-repeat="answer in q.content"> 
             {{ answer }}
           </button>
         </div>
