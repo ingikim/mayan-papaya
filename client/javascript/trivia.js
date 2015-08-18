@@ -68,11 +68,14 @@
     };
 
     //for question navigation
-    $scope.navLoc = 0;
+    $scope.navLoc = Math.floor(Math.random() * 150);
+    $scope.questionCount = 0;
     $scope.nextLoc = function() {
-      $scope.navLoc++;
+      //TODO make more dynamic
+      $scope.navLoc = Math.floor(Math.random() * 150);
       $scope.setCountdown();
-      if ($scope.navLoc === 10) {
+      $scope.questionCount++;
+      if ($scope.questionCount === 10) {
         $scope.updateUser({
           username: $scope.username,
           score: $scope.score,
@@ -95,31 +98,40 @@
     $scope.getQuestions();
 
     //for handling user answers to trivia
-   $scope.checkAnswer = function(keyEvent, question) {
-      if(keyEvent.keyCode === 13) {
-        $scope.answered++;
-        var id = question.id;
-        var value = question.value;
-        var userAns = question.userAnswer;
-        return $http.post('/api/trivia', {
-          id: id,
-          value: value,
-          userAns: userAns
-        }).then(function (res) {
-          var q = res.data;
-          if(q.correct){
-            $scope.correct++;
-            $scope.currentStreak++;
-            $scope.score += value;
-          }else{
-            $scope.currentStreak = 0;
-          }
-          if($scope.currentStreak > $scope.correctStreak){
-            $scope.correctStreak = $scope.currentStreak;
-          }
-          $scope.nextLoc();
-        });
+   $scope.checkAnswer = function(question, answer) {
+      $scope.answered++;
+      var id = question.id;
+      var value = question.value;
+      var userAns = question.userAnswer;
+      if(answer === question.correct) {
+        $scope.correct++;
+        $scope.currentStreak++;
+        $scope.score += 20;
+      } else {
+        $scope.currentStreak = 0;
       }
+      if($scope.currentStreak > $scope.correctStreak){
+        $scope.correctStreak = $scope.currentStreak;
+      }
+      $scope.nextLoc();
+//       return $http.post('/api/trivia', {
+//        id: id,
+//        value: value,
+//        userAns: userAns
+//      }).then(function (res) {
+//        var q = res.data;
+//        if(q.correct){
+//          $scope.correct++;
+//          $scope.currentStreak++;
+//          $scope.score += value;
+//        }else{
+//          $scope.currentStreak = 0;
+//        }
+//        if($scope.currentStreak > $scope.correctStreak){
+//          $scope.correctStreak = $scope.currentStreak;
+//        }
+//        $scope.nextLoc();
+//      });
     };
 
 
@@ -133,7 +145,7 @@
         $scope.gameTimer = undefined;
       }
       //initialize timer number
-      $scope.counter = 30;
+      $scope.counter = 15;
       //countdown
       $scope.gameTimer = $interval(function() {
         $scope.counter--;
