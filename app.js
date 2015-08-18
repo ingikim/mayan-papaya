@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var mongoose = require('mongoose');
 var app = express();
+var io = require('socket.io')();
 
 require('./server/config/middleware.js')(app, express);
 
@@ -28,9 +29,22 @@ if (!module.parent) {
 
     console.log('App listening at http://%s:%s', host, port);
   });
+
+  io.attach(server);
 }
 
-module.exports = app;
+console.log("app.js: app is " + app);
+console.log("app.js: io is " + io);
+
+// module.exports = {
+//   app: app,
+//   io: io
+// };
+
+exports.app = app;
+exports.io = io;
+
+
 
 
 

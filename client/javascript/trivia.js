@@ -159,6 +159,7 @@
         // * set some state info that indicates that this user
         // initiated the game -> gets a start button to start gameplay
         $scope.code = data.code;
+        $scope.socket = io('/' + $scope.code);
         console.log("TriviaController: newGame " + $scope.code);
 
       });
@@ -166,8 +167,16 @@
 
     $scope.joinGame = function() {
       // $scope.code should be set from the form model
-      // TODO: set up state for joining game.
-      console.log("TriviaController: joinGame " + $scope.code);
+
+      return $http.put('/api/game/join', {code: $scope.code})
+      .success(function(data) {
+        // TODO: set up state for joining game.
+        console.log("TriviaController: joinGame " + $scope.code);
+      }).error(function(data) {
+        // TODO: handle the error and prevent the user from being redirected
+        // to the start game view.
+        console.log("TriviaController: joinGame error with code " + $scope.code);
+      });
     };
 
   }]);
