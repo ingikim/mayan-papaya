@@ -1,4 +1,4 @@
-<div class="q" ng-repeat="q in questions">
+<div class="q" ng-repeat="(key, q) in questions">
   <div class="play-trivia-view col-md-6 col-md-offset-3 well"
     ng-show="$index===navLoc">
 
@@ -17,7 +17,7 @@
           <div class="play-trivia-question-panel panel panel-primary">
             <div class="panel-heading">
               <h3 class="panel-title">
-                Category: {{q.category.title}}
+                Category: Title
               </h3>
             </div>
             <div class="panel-body">
@@ -31,13 +31,9 @@
 
       <div class="row play-trivia-row">
         <div class="col-md-8 col-md-offset-2">
-          <input type='text'
-            class="form-control input-lg play-trivia-answer-input"
-            placeholder="{{q.clue}}"
-            ng-keypress="checkAnswer($event, q)"
-            ng-model="q.userAnswer"
-            autofocus>
-          </input>
+          <button class="btn btn-primary" ng-click="checkAnswer(q, $index)" ng-repeat="answer in q.content"> 
+            {{ answer }}
+          </button>
         </div>
       </div>
 
