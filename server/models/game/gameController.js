@@ -7,8 +7,9 @@ module.exports = {
   newGame: function(req, res) {
     var code = Math.floor(Math.random() * 1000);
 
-    // Arbitrarily 1 for now; can possibly represent number of players per code
-    activeCodes[code] = 1; 
+    // Try storing a list of the usernames for this game
+    activeCodes[code] = [req.user.username];
+    console.log("newGame: user list for " + code + " is " + activeCodes[code]);
 
     // Initiate socket.io connection
     connection.startConnection(code);
@@ -23,7 +24,9 @@ module.exports = {
     console.log("gameController: joinGame req for " + code);
 
     if (activeCodes[code]) {
-      activeCodes[code]++;
+      activeCodes[code].push(req.user.username);
+      console.log("joinGame: user list for " + code + " is " + activeCodes[code]);
+      connection.emitUserList(code, activeCodes[code]);
       res.send(200);
     } else {
       res.send(404);

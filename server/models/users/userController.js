@@ -142,12 +142,15 @@ module.exports = {
       });
   },
 
-  checkAuth: function (req, res) {
+  checkAuth: function (req, res, next) {
     // checking to see if the user is authenticated
     // grab the token in the header is any
     // then decode the token, which we end up being the user object
     // check to see if that user exists in the database
     var token = req.headers['x-access-token'];
+
+    console.log("checkAuth called.");
+
     if (!token) {
       res.statusCode = 403;
       res.json({error: 'No token provided'});
@@ -157,7 +160,10 @@ module.exports = {
       findUser({username: user.username})
         .then(function (foundUser) {
           if (foundUser) {
-            res.sendStatus(200);
+            console.log("checkAuth: found user " + user.username);
+            req.user = foundUser;
+            // res.sendStatus(200);
+            next();
           } else {
             res.sendStatus(401);
           }
@@ -179,7 +185,7 @@ module.exports = {
     }
     findUser({username: username})
       .then(function(user) {
-        console.log(user);
+        console.log("getUserData: " + user);
         res.json(JSON.stringify(user));
       });
   }
