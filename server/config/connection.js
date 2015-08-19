@@ -10,6 +10,16 @@ module.exports = {
     namespace.on('connection', function(socket) {
       console.log("connection: startConnection " + code);
     }); 
+    // app.io.on('connection', function(socket) {
+    //   console.log("connection: startConnection " + code);
+    // }); 
+  },
+
+  emitUserList: function(code, userList) {
+    console.log("emitUserList: " + code + " " + userList);
+
+    var namespace = app.io.of('/' + code);
+    namespace.emit('userlist', userList);
   },
 
 };
