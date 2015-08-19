@@ -21,6 +21,10 @@ module.exports = {
         console.log("Socket: startgame");
         namespace.emit('startgame');
       });
+      socket.on('scoreupdate', function(data) {
+        console.log("Socket: scoreupdate");
+        namespace.emit('scoreupdate', data);
+      });
     }); 
   },
 
