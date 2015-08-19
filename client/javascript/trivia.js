@@ -57,6 +57,7 @@
 
     $scope.updateUser = Questions.updateUser;
     $scope.username = ProfileFactory.getUsername();
+    // $scope.userList = [];
 
     // initialize game data
     $scope.gameDataInit = function() {
@@ -171,11 +172,17 @@
         // * set some state info that indicates that this user
         // initiated the game -> gets a start button to start gameplay
         $scope.code = data.code;
+        $scope.initiatedGame = true;
         $scope.socket = io(window.location.origin + '/' + $scope.code);
         console.log("TriviaController: newGame " + $scope.code);
 
+        $scope.socket.emit('newuser', $scope.username);
+
         $scope.socket.on('userlist', function(userList) {
           console.log('Socket : On : userlist: ' + userList);
+          $scope.userList = userList;
+          $scope.$apply();
+          console.log("$scope.userList: " + $scope.userList);
         });
 
       });
@@ -187,12 +194,35 @@
       return $http.put('/api/game/join', {code: $scope.code})
       .success(function(data) {
         console.log("TriviaController: joinGame " + $scope.code);
-        // *** TODO: setup socket and listeners
+        $scope.initiatedGame = false;
+        $scope.socket = io(window.location.origin + '/' + $scope.code);
+        $scope.socket.emit('newuser', $scope.username);
+
+        $scope.socket.on('startgame', function() {
+          console.log("Socket: startgame");
+          $scope.startGame();
+        });
+
+        $scope.socket.on('userlist', function(userList) {
+          console.log('Socket : On : userlist: ' + userList);
+          $scope.userList = userList;
+          $scope.$apply();
+          console.log("$scope.userList: " + $scope.userList);
+        });
       }).error(function(data) {
         // TODO: handle the error and prevent the user from being redirected
         // to the start game view.
         console.log("TriviaController: joinGame error with code " + $scope.code);
       });
+    };
+
+    $scope.startGame = function() {
+      // start timers ...
+      console.log("TriviaController: startGame");
+
+      if ($scope.initiatedGame) {
+        $scope.socket.emit('startgame');
+      }
     };
 
   }]);
