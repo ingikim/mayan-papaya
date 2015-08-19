@@ -15,6 +15,7 @@ module.exports = function(app){
         res.sendStatus(500);
       } else {
         res.send(JSON.stringify(questions));
-      }    
+      }
+    });
   });
 };
