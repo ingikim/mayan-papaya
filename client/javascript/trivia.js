@@ -160,6 +160,41 @@
       $interval.cancel($scope.gameTimer);
     });
 
+    // Request a new game from the server;
+    // on success, we receive a code for our game room / socket namespace
+    $scope.newGame = function() {
+      return $http.get('/api/game').success(function(data) {
+
+        // TODO: handle intial game setup ...
+        // - set up socket connection?
+        // - update the view?
+        // * set some state info that indicates that this user
+        // initiated the game -> gets a start button to start gameplay
+        $scope.code = data.code;
+        $scope.socket = io(window.location.origin + '/' + $scope.code);
+        console.log("TriviaController: newGame " + $scope.code);
+
+        $scope.socket.on('userlist', function(userList) {
+          console.log('Socket : On : userlist: ' + userList);
+        });
+
+      });
+    };
+
+    $scope.joinGame = function() {
+      // $scope.code should be set from the form model
+
+      return $http.put('/api/game/join', {code: $scope.code})
+      .success(function(data) {
+        console.log("TriviaController: joinGame " + $scope.code);
+        // *** TODO: setup socket and listeners
+      }).error(function(data) {
+        // TODO: handle the error and prevent the user from being redirected
+        // to the start game view.
+        console.log("TriviaController: joinGame error with code " + $scope.code);
+      });
+    };
+
   }]);
 
 })();
