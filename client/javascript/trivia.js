@@ -177,6 +177,11 @@
         console.log("TriviaController: newGame " + $scope.code);
 
         $scope.socket.emit('newuser', $scope.username);
+        
+        $scope.socket.on('startgame', function() {
+          console.log("Socket: startgame");
+          $scope.startGame();
+        });
 
         $scope.socket.on('userlist', function(userList) {
           console.log('Socket : On : userlist: ' + userList);
@@ -216,13 +221,22 @@
       });
     };
 
+    $scope.initiateGame = function() {
+      $scope.socket.emit('startgame');
+    };
+
     $scope.startGame = function() {
       // start timers ...
       console.log("TriviaController: startGame");
 
-      if ($scope.initiatedGame) {
-        $scope.socket.emit('startgame');
-      }
+      // if ($scope.initiatedGame) {
+      //   $scope.socket.emit('startgame');
+      // }
+
+      $scope.$apply(function() {
+        $location.path("/trivia/play"); // render play view
+        console.log("$location.path: " + $location.path());
+      });
     };
 
   }]);
