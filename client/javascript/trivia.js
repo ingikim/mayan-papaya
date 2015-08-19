@@ -100,10 +100,7 @@
     //for handling user answers to trivia
    $scope.checkAnswer = function(question, answer) {
       $scope.answered++;
-      var id = question.id;
-      var value = question.value;
-      var userAns = question.userAnswer;
-      if(answer === question.correct) {
+      if(answer === question.answer) {
         $scope.correct++;
         $scope.currentStreak++;
         $scope.score += Math.floor(Math.sqrt(+question.level) * 50 + $scope.counter);
@@ -114,24 +111,6 @@
         $scope.correctStreak = $scope.currentStreak;
       }
       $scope.nextLoc();
-//       return $http.post('/api/trivia', {
-//        id: id,
-//        value: value,
-//        userAns: userAns
-//      }).then(function (res) {
-//        var q = res.data;
-//        if(q.correct){
-//          $scope.correct++;
-//          $scope.currentStreak++;
-//          $scope.score += value;
-//        }else{
-//          $scope.currentStreak = 0;
-//        }
-//        if($scope.currentStreak > $scope.correctStreak){
-//          $scope.correctStreak = $scope.currentStreak;
-//        }
-//        $scope.nextLoc();
-//      });
     };
 
 
