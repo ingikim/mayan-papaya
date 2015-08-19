@@ -76,5 +76,11 @@
   cursor: pointer;
 }
 
+.answer-btn {
+  margin-top: 15px;
+  display: block;
+}
 
-
+.answer-btn:first-of-type {
+  margin-top: 0px;
+}
