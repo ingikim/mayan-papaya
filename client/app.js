@@ -76,6 +76,8 @@
     // of interceptors. Think of it like middleware for your ajax calls
     $httpProvider.interceptors.push('AttachTokens');
 
+    // Set up socket listeners
+
   }]);
 
 

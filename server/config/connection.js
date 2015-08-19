@@ -12,4 +12,11 @@ module.exports = {
     }); 
   },
 
+  emitUserList: function(code, userList) {
+    console.log("emitUserList: " + code + " " + userList);
+
+    var namespace = app.io.of('/' + code);
+    namespace.emit('userlist', userList);
+  },
+
 };
