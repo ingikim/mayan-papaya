@@ -5,6 +5,7 @@
     <div class="col-md-8 col-md-offset-2">
       <div>
         <h3>Sign In</h3>
+        <p ng-show="fail">Invalid username and/or password</p>
       </div>
       <!-- name or email input -->
       <div class="row">
@@ -23,7 +24,8 @@
             class="form-control input-md"
             required class="text"
             placeholder="Password"
-            ng-model="user.password"/>
+            ng-model="user.password"
+            ng-keyup="$event.keyCode === 13 && signin()"/>
         </div>
       </div>
       <!-- signin button -->
