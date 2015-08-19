@@ -13,6 +13,8 @@
         // success cb executes when request returns
         // route returns a list of questions
         obj.questions = data;
+        console.log('getQuestions: questions[0]');
+        console.log(obj.questions[0]);
       });
     };
 
@@ -146,22 +148,32 @@
     $scope.setupSocket = function() {
       $scope.socket = io(window.location.origin + '/' + $scope.code);
       $scope.socket.emit('newuser', $scope.username);
+
+      $scope.socket.on('userlist', function(userList) {
+        console.log('Socket : On : userlist: ' + userList);
+        for (var i = 0; i < userList.length; i++) {
+          $scope.userScores[userList[i]] = 0;
+        }
+        $scope.$apply();
+      });
+
+      // initialize the score for each new user to zero.
+      // $scope.socket.on('newuser', function(username) {
+      //   console.log("Socket: newuser " + username);
+      //   $scope.userScores[username] = 0;
+      //   $scope.$apply();
+      // });
       
       $scope.socket.on('startgame', function() {
         console.log("Socket: startgame");
         $scope.startGame();
       });
 
-      $scope.socket.on('userlist', function(userList) {
-        console.log('Socket : On : userlist: ' + userList);
-        $scope.userList = userList;
-        $scope.$apply();
-        console.log("$scope.userList: " + $scope.userList);
-      });
 
       $scope.socket.on('scoreupdate', function(data) {
         console.log("Socket: scoreupdate");
         $scope.userScores[data.username] = data.score;
+        $scope.$apply();
       });
     };
 
@@ -193,7 +205,6 @@
         $scope.initiatedGame = false;
 
         $scope.setupSocket();
-        });
       }).error(function(data) {
         // TODO: handle the error and prevent the user from being redirected
         // to the start game view.

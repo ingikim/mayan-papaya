@@ -16,6 +16,7 @@ module.exports = {
         // store list of usernames here?
         activeCodes[code].push(username);
         namespace.emit('userlist', activeCodes[code]);
+        // namespace.emit('newuser', username);
       });
       socket.on('startgame', function() {
         console.log("Socket: startgame");
