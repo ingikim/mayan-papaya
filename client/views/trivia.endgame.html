@@ -5,14 +5,13 @@
 
       <div class="row">
         <div class="col-md-12 text-center">
-          <p> {{winner}} </p>
           <h1>Winner is {{winner[0]}} with a Score of {{winner[1]}}!</h1>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-12">
-          <a class="btn btn-default btn-lg text-center"
+          <a class="btn btn-default btn-raised btn-material-teal play-trivia-btn text-center"
             ui-sref="trivia"
             ui-sref-opts="{reload: true}"
             ng-init="clicked=false"
