@@ -99,6 +99,17 @@ hr {
   color: white;
 }
 
+.joinGameInput {
+  width: 30%;
+  font-size: 18px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+td {
+  text-align: left;
+}
+
 /*.btn {
   display: block;
   white-space: normal;
