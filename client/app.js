@@ -1,6 +1,9 @@
 (function() {
 
   var app = angular.module('TriviaWithFriends', ['ui.router', 'Navigation', 'Footer', 'Trivia', 'Profile', 'User', 'Stats']); // need User dependency
+  app.run(function($rootScope, $location) {
+    $rootScope.location = $location;
+  });
 
   app.config ([
   '$stateProvider',
