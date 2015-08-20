@@ -60,6 +60,8 @@
     $scope.updateUser = Questions.updateUser;
     $scope.username = ProfileFactory.getUsername();
     $scope.userScores = {};
+    $scope.validGameRequest = false;
+    $scope.invalidGameRequest = false;
 
     // initialize game data
     $scope.gameDataInit = function() {
@@ -189,6 +191,7 @@
         // initiated the game -> gets a start button to start gameplay
         $scope.code = data.code;
         $scope.initiatedGame = true;
+        $scope.validGameRequest = true;
         console.log("TriviaController: newGame " + $scope.code + " initiatedGame is " + $scope.initiatedGame);
 
         $scope.setupSocket();
@@ -198,17 +201,20 @@
 
     $scope.joinGame = function() {
       // $scope.code should be set from the form model
+      $scope.code = $scope.formCode;
 
       return $http.put('/api/game/join', {code: $scope.code})
       .success(function(data) {
         console.log("TriviaController: joinGame " + $scope.code);
         $scope.initiatedGame = false;
+        $scope.validGameRequest = true;
 
         $scope.setupSocket();
       }).error(function(data) {
         // TODO: handle the error and prevent the user from being redirected
         // to the start game view.
         console.log("TriviaController: joinGame error with code " + $scope.code);
+        $scope.invalidGameRequest = true;
       });
     };
 
