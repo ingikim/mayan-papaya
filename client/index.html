@@ -2,10 +2,16 @@
 <html>
   <head>
     <title>Trivia with Friends</title>
-    <link href="styles/bootstrapColorScheme.css" rel="stylesheet">
-    <link href="styles/style.css" rel="stylesheet">
+    <!-- <link href="styles/bootstrapColorScheme.css" rel="stylesheet"> -->
     <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/assets/favicon.ico" type="image/x-icon">
+
+    <link href="lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include roboto.css to use the Roboto web font, material.css to include the theme and ripples.css to style the ripple effect -->
+    <link href="lib/bootstrap-material-design/dist/css/roboto.min.css" rel="stylesheet">
+    <link href="lib/bootstrap-material-design/dist/css/material.min.css" rel="stylesheet">
+    <link href="lib/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet">
 
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-route/angular-route.js"></script>
@@ -37,15 +43,26 @@
           ng-show="show()">
           <!-- home tab not used atm -->
           <!-- <li ng-class="getClass('home')" role="presentation"><a href="/#/home">Home</a></li> -->
-          <li ng-class="getClass('profile')" role="presentation"><a href="/#/profile">Profile</a></li>
-          <li ng-class="getClass('stats')" role="presentation"><a href="/#/stats">Stats</a></li>
-          <li ng-class="getClass('trivia')" role="presentation"><a href="/#/trivia">Trivia</a></li>
-          <li class="pull-right pointer" role="presentation"><a ng-click="logout();">Logout</a></li>
+          <li role="presentation"><a ng-class="getClass('profile')" class="btn btn-default btn-flat" href="/#/profile">Profile</a></li>
+          <li role="presentation"><a ng-class="getClass('stats')" class="btn btn-default btn-flat" href="/#/stats">Stats</a></li>
+          <li role="presentation"><a ng-class="getClass('trivia')" class="btn btn-default btn-flat" href="/#/trivia">Trivia</a></li>
+          <li class="pull-right pointer" role="presentation"><a class="btn btn-default btn-flat" ng-click="logout();">Logout</a></li>
         </ul>
       </div>
     </div>
 
     <div ui-view></div>
 
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <script src="lib/bootstrap-material-design/dist/js/ripples.min.js"></script>
+    <script src="lib/bootstrap-material-design/dist/js/material.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // This command is used to initialize some elements and make them work properly
+            $.material.init();
+        });
+    </script>
   </body>
 </html>
