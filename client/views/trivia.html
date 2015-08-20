@@ -4,18 +4,21 @@
   <!-- Toggle 'clicked' on button click to hide this view and show ui-view
   after click -->
   <div>
-    <a class="play-trivia-btn btn btn-info btn-lg"
+    <a class="play-trivia-btn btn btn-info"
       ui-sref=".startgame"
       ng-click="newGame()"
       ng-hide="validGameRequest">
       Create Game
     </a>
   </div>
-  <p>{{validGameRequest}}</p>
+  <br/>
+  <hr ng-hide="validGameRequest" width="50%" style="height:10px" />
+  <br/>
   <div ng-hide="validGameRequest">
     <form name='gameForm' novalidate>
-      <input name='gameCode' type="number" ng-model="formCode"
+      <input name='gameCode' ng-model="formCode"
         placeholder="Enter Your Game Code # Here" required />
+      <br/>
       <a class="play-trivia-btn btn btn-info btn-lg"
         ui-sref=".startgame"
         ng-click="joinGame()">

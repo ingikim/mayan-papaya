@@ -1,4 +1,3 @@
-<p>{{userScores}}</p>
 <div class="q" ng-repeat="q in questions">
   <div class="play-trivia-view col-md-6 well col-md-offset-2"
     ng-show="$index===navLoc">
@@ -31,8 +30,8 @@
       </div>
 
       <div class="row play-trivia-row">
-        <div class="center-block">
-          <button class="btn btn-primary answer-btn center-block" ng-click="checkAnswer(q, $index)" ng-repeat="answer in q.content"> 
+        <div class="col-md-10 col-md-offset-1">
+          <button class="btn btn-primary answer-btn" ng-click="checkAnswer(q, $index)" ng-repeat="answer in q.content"> 
             {{ answer }}
           </button>
         </div>

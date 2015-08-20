@@ -89,6 +89,8 @@
           answered: $scope.answered
 
         });
+        // calculate who won for display in the endgame view
+        $scope.highScore();
         $location.path("/trivia/endgame"); // render endgame view
       }
     };
@@ -133,6 +135,7 @@
       }
       //initialize timer number
       $scope.counter = 15;
+      
       //countdown
       $scope.gameTimer = $interval(function() {
         $scope.counter--;
@@ -236,6 +239,22 @@
         $location.path("/trivia/play"); // render play view
         console.log("$location.path: " + $location.path());
       });
+    };
+
+    $scope.highScore = function() {
+      var currHighest;
+
+      console.log("Calculating highScore");
+
+      for (var key in $scope.userScores) {
+        if (currHighest === undefined) {
+          currHighest = [key, $scope.userScores[key]];
+        } else if ($scope.userScores[key] > currHighest[1]) {
+          currHighest = [key, $scope.userScores[key]];
+        }
+      }
+
+      $scope.winner = currHighest;
     };
 
   }]);
