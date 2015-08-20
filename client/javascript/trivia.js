@@ -13,6 +13,8 @@
         // success cb executes when request returns
         // route returns a list of questions
         obj.questions = data;
+        console.log('getQuestions: questions[0]');
+        console.log(obj.questions[0]);
       });
     };
 
@@ -57,6 +59,9 @@
 
     $scope.updateUser = Questions.updateUser;
     $scope.username = ProfileFactory.getUsername();
+    $scope.userScores = {};
+    $scope.validGameRequest = false;
+    $scope.invalidGameRequest = false;
 
     // initialize game data
     $scope.gameDataInit = function() {
@@ -104,6 +109,9 @@
         $scope.correct++;
         $scope.currentStreak++;
         $scope.score += Math.floor(Math.sqrt(+question.level) * 50 + $scope.counter);
+
+        // broadcast our score update
+        $scope.socket.emit('scoreupdate', {username: $scope.username, score: $scope.score});
       } else {
         $scope.currentStreak = 0;
       }
@@ -138,6 +146,97 @@
     $scope.$on('$destroy', function() {
       $interval.cancel($scope.gameTimer);
     });
+
+    $scope.setupSocket = function() {
+      $scope.socket = io(window.location.origin + '/' + $scope.code);
+      $scope.socket.emit('newuser', $scope.username);
+
+      $scope.socket.on('userlist', function(userList) {
+        console.log('Socket : On : userlist: ' + userList);
+        for (var i = 0; i < userList.length; i++) {
+          $scope.userScores[userList[i]] = 0;
+        }
+        $scope.$apply();
+      });
+
+      // initialize the score for each new user to zero.
+      // $scope.socket.on('newuser', function(username) {
+      //   console.log("Socket: newuser " + username);
+      //   $scope.userScores[username] = 0;
+      //   $scope.$apply();
+      // });
+      
+      $scope.socket.on('startgame', function() {
+        console.log("Socket: startgame");
+        $scope.startGame();
+      });
+
+
+      $scope.socket.on('scoreupdate', function(data) {
+        console.log("Socket: scoreupdate");
+        $scope.userScores[data.username] = data.score;
+        $scope.$apply();
+      });
+    };
+
+    // Request a new game from the server;
+    // on success, we receive a code for our game room / socket namespace
+    $scope.newGame = function() {
+      return $http.get('/api/game').success(function(data) {
+
+        // TODO: handle intial game setup ...
+        // - set up socket connection?
+        // - update the view?
+        // * set some state info that indicates that this user
+        // initiated the game -> gets a start button to start gameplay
+        $scope.code = data.code;
+        $scope.initiatedGame = true;
+        $scope.validGameRequest = true;
+        console.log("TriviaController: newGame " + $scope.code + " initiatedGame is " + $scope.initiatedGame);
+
+        $scope.setupSocket();
+
+      });
+    };
+
+    $scope.joinGame = function() {
+      // $scope.code should be set from the form model
+      $scope.code = $scope.formCode;
+
+      return $http.put('/api/game/join', {code: $scope.code})
+      .success(function(data) {
+        console.log("TriviaController: joinGame " + $scope.code);
+        $scope.initiatedGame = false;
+        $scope.validGameRequest = true;
+
+        $scope.setupSocket();
+      }).error(function(data) {
+        // TODO: handle the error and prevent the user from being redirected
+        // to the start game view.
+        console.log("TriviaController: joinGame error with code " + $scope.code);
+        $scope.invalidGameRequest = true;
+      });
+    };
+
+    $scope.initiateGame = function() {
+      $scope.socket.emit('startgame');
+    };
+
+    $scope.startGame = function() {
+      // start timers ...
+      console.log("TriviaController: startGame");
+
+      // if ($scope.initiatedGame) {
+      //   $scope.socket.emit('startgame');
+      // }
+      $scope.setCountdown();
+      $scope.gameDataInit();
+
+      $scope.$apply(function() {
+        $location.path("/trivia/play"); // render play view
+        console.log("$location.path: " + $location.path());
+      });
+    };
 
   }]);
 

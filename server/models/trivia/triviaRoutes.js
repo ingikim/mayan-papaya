@@ -1,4 +1,5 @@
 var triviaController = require('./triviaController.js');
+var userController = require('../users/userController');
 var unirest = require('unirest');
 var Trivia = require('./triviaModel');
 
@@ -7,14 +8,14 @@ var cleanAnswer = function(answer) {
 };
 
 module.exports = function(app){
-  app.post('/', triviaController.checkAnswer);
-  app.get('/', function(req, res){
+  app.post('/', userController.checkAuth, triviaController.checkAnswer);
+  app.get('/', userController.checkAuth, function(req, res){
     Trivia.find(function(err, questions) {
       if(err) {
         res.sendStatus(500);
       } else {
         res.send(JSON.stringify(questions));
-      }    
+      }
     });
   });
 };

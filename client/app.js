@@ -27,6 +27,11 @@
             templateUrl: 'views/trivia.categories.html',
             data: { publicallyAccessible: false }
           })
+          .state('trivia.startgame', {
+            url: '/startgame',
+            templateUrl: 'views/trivia.startgame.html',
+            data: { publicallyAccessible: false }
+          })
           .state('trivia.play', {
             url: '/play',
             templateUrl: 'views/trivia.play.html',
@@ -73,6 +78,8 @@
     // We add our $httpInterceptor into the array
     // of interceptors. Think of it like middleware for your ajax calls
     $httpProvider.interceptors.push('AttachTokens');
+
+    // Set up socket listeners
 
   }]);
 
