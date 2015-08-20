@@ -4,7 +4,7 @@
   <!-- Toggle 'clicked' on button click to hide this view and show ui-view
   after click -->
   <div>
-    <a class="play-trivia-btn btn btn-info"
+    <a class="play-trivia-btn btn btn-default btn-raised btn-material-teal"
       ui-sref=".startgame"
       ng-click="newGame()"
       ng-hide="validGameRequest">
@@ -19,7 +19,7 @@
       <input name='gameCode' ng-model="formCode"
         placeholder="Enter Your Game Code # Here" required />
       <br/>
-      <a class="play-trivia-btn btn btn-info btn-lg"
+      <a class="play-trivia-btn btn btn-default btn-raised btn-material-teal"
         ui-sref=".startgame"
         ng-click="joinGame()">
         Join Game
