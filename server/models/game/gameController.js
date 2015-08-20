@@ -1,4 +1,3 @@
-// var connection = require('../../config/connection');
 var app = require('../../../app');
 var activeCodes = {};
 
@@ -31,10 +30,13 @@ module.exports = {
 
   // Generate a random code for a game "room" / socket namespace.
   newGame: function(req, res) {
-    var code = Math.floor(Math.random() * 1000);
-
+    var code;
     // Try storing a list of the usernames for this game
     // activeCodes[code] = [req.user.username];
+    do{
+      code = Math.floor(Math.random() * 1000);
+    } while(activeCodes[code] !== undefined);
+    
     activeCodes[code] = [];
     console.log("newGame: user list for " + code + " is " + activeCodes[code]);
 
