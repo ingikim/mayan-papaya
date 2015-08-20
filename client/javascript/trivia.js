@@ -134,8 +134,8 @@
         $scope.gameTimer = undefined;
       }
       //initialize timer number
-      // $scope.counter = 15;
-      $scope.counter = 1000;
+      $scope.counter = 15;
+      
       //countdown
       $scope.gameTimer = $interval(function() {
         $scope.counter--;
