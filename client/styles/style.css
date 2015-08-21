@@ -100,7 +100,7 @@ hr {
 }
 
 .joinGameInput {
-  width: 30%;
+  width: 15em;
   font-size: 18px;
   text-align: center;
   margin: 0 auto;
@@ -110,6 +110,9 @@ td {
   text-align: left;
 }
 
+.nav>li>a {
+  padding: 10px 10px;
+}
 /*.btn {
   display: block;
   white-space: normal;
