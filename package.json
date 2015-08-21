@@ -2,7 +2,7 @@
   "name": "mayan-papaya",
   "version": "1.0.0",
   "description": "TriviaWithFriends",
-  "main": "server/app.js",
+  "main": "app.js",
   "scripts": {
     "test": "grunt test",
     "start": "node app.js",

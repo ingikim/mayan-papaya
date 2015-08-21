@@ -29,7 +29,7 @@
     $scope.user = {
       "_id": "55ce9311dda321437709f35c",
       "salt": "$2a$10$gLPRaKFp3JG6J2M\/VOQ.uu",
-      "username": "Bob",
+      "username": " ",
       "password": "$2a$10$gLPRaKFp3JG6J2M\/VOQ.uuE67zxeljbSnSp8DfWpwkOMsPHDw1wwW",
       "__v": 0,
       "mostRecentGame": {
