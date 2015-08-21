@@ -26,8 +26,9 @@
   border-radius: 4px;
 }
 .play-trivia-btn {
-  font-size: 36px;
-  padding: 24px 0;
+  font-size: 24px;
+  padding: 12px 12px;
+  margin: 20px;
 }
 .play-trivia-row {
   margin: 15px 0;
@@ -76,11 +77,41 @@
   cursor: pointer;
 }
 
+
 .answer-btn {
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 15px;
   display: block;
+  white-space: normal;
 }
 
 .answer-btn:first-of-type {
   margin-top: 0px;
 }
+
+hr {
+  border-top: 5px solid #596a7b;
+}
+
+.btn:not([class*=btn-]):hover, .btn-default:hover, .btn-flat:not(.btn-link):hover, .btn:not([class*=btn-]).active, .btn-default.active, .btn-flat:not(.btn-link).active {
+  background-color: #009688;
+  color: white;
+}
+
+.joinGameInput {
+  width: 30%;
+  font-size: 18px;
+  text-align: center;
+  margin: 0 auto;
+}
+
+td {
+  text-align: left;
+}
+
+/*.btn {
+  display: block;
+  white-space: normal;
+}
+*/

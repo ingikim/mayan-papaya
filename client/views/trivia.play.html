@@ -1,9 +1,13 @@
 <div class="q" ng-repeat="q in questions">
-  <div class="play-trivia-view col-md-6 col-md-offset-3 well"
+  <div class="play-trivia-view col-md-5 well col-md-offset-2"
     ng-show="$index===navLoc">
 
-    <div class="col-md-12 text-left">
-      <div class="row play-trivia-row">
+    <div class="col-md-12 text-center">
+      <div ng-show="waitingForNext" class="row play-trivia-row text-center">
+        <h4>Waiting for Other Players ...</h4>
+      </div>
+
+      <div class="row play-trivia-row text-left">
         <div class="col-md-6">
           <h4>Time left: {{counter}}</h4>
         </div>
@@ -29,13 +33,31 @@
         </div>
       </div>
 
-      <div class="row play-trivia-row">
-        <div class="center-block">
-          <button class="btn btn-primary answer-btn center-block" ng-click="checkAnswer(q, $index)" ng-repeat="answer in q.content"> 
+      <div ng-hide="waitingForNext" class="row play-trivia-row">
+        <div class="col-md-10 col-md-offset-1">
+          <button class="btn btn-primary answer-btn" ng-click="checkAnswer(q, $index)" ng-repeat="answer in q.content"> 
             {{ answer }}
           </button>
         </div>
       </div>
 
   </div>
+</div>
+</div>
+
+<div class="play-trivia-view col-md-2 well col-md-offset-1">
+  <table class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Username</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="(key, value) in userScores">
+        <td>{{key}}</td>
+        <td>{{value}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
