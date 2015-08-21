@@ -2,8 +2,12 @@
   <div class="play-trivia-view col-md-5 well col-md-offset-2"
     ng-show="$index===navLoc">
 
-    <div class="col-md-12 text-left">
-      <div class="row play-trivia-row">
+    <div class="col-md-12 text-center">
+      <div ng-show="waitingForNext" class="row play-trivia-row text-center">
+        <h4>Waiting for Other Players ...</h4>
+      </div>
+
+      <div class="row play-trivia-row text-left">
         <div class="col-md-6">
           <h4>Time left: {{counter}}</h4>
         </div>
@@ -29,7 +33,7 @@
         </div>
       </div>
 
-      <div class="row play-trivia-row">
+      <div ng-hide="waitingForNext" class="row play-trivia-row">
         <div class="col-md-10 col-md-offset-1">
           <button class="btn btn-primary answer-btn" ng-click="checkAnswer(q, $index)" ng-repeat="answer in q.content"> 
             {{ answer }}

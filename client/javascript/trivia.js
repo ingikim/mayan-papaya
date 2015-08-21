@@ -59,7 +59,9 @@
 
     $scope.updateUser = Questions.updateUser;
     $scope.username = ProfileFactory.getUsername();
-    $scope.userScores = {};
+    $scope.userScores;
+    $scope.questionNums = [];
+    $scope.waitingForNext = false;
     $scope.validGameRequest = false;
     $scope.invalidGameRequest = false;
 
@@ -72,27 +74,15 @@
       $scope.score = 0;
     };
 
-    //for question navigation
-    $scope.navLoc = Math.floor(Math.random() * 150);
-    $scope.questionCount = 0;
+    // for question navigation
     $scope.nextLoc = function() {
-      //TODO make more dynamic
-      $scope.navLoc = Math.floor(Math.random() * 150);
-      $scope.setCountdown();
+      $scope.waitingForNext = false;
       $scope.questionCount++;
-      if ($scope.questionCount === 10) {
-        $scope.updateUser({
-          username: $scope.username,
-          score: $scope.score,
-          correct: $scope.correct,
-          correctStreak: $scope.correctStreak,
-          answered: $scope.answered
+      $scope.navLoc = $scope.questionNums[$scope.questionCount];
+      $scope.$apply();
 
-        });
-        // calculate who won for display in the endgame view
-        $scope.highScore();
-        $location.path("/trivia/endgame"); // render endgame view
-      }
+      $scope.setCountdown();
+
     };
 
     //for getting trivia questions from the jService API
@@ -100,6 +90,8 @@
       Questions.getQuestions()
         .success(function(data) {
           $scope.questions = data;
+          console.log("getQuestions[0]: ");
+          console.log($scope.questions[0]);
         });
     };
     $scope.getQuestions();
@@ -120,7 +112,13 @@
       if($scope.currentStreak > $scope.correctStreak){
         $scope.correctStreak = $scope.currentStreak;
       }
-      $scope.nextLoc();
+      $scope.socket.emit('finishedq', {username: $scope.username, score: $scope.score});
+
+      // set a flag so that we show a message that we are waiting for
+      // other players to complete this round
+      $scope.waitingForNext = true;
+
+      // $scope.nextLoc();
     };
 
 
@@ -136,12 +134,19 @@
       //initialize timer number
       $scope.counter = 15;
       
-      //countdown
+      // countdown display per question.
       $scope.gameTimer = $interval(function() {
-        $scope.counter--;
+        if ($scope.counter > 0) {
+          $scope.counter--;
+        }
+
         if($scope.counter === 0) {
-          $scope.nextLoc();
-          $scope.setCountdown();
+          $scope.socket.emit('finishedq', {username: $scope.username, score: $scope.score});
+
+          // TODO: change to have a socket wait for
+          // signal from server to move on to next Q
+          //   $scope.nextLoc();
+          //   $scope.setCountdown();
         }
       }, 1000);
     };
@@ -156,9 +161,7 @@
 
       $scope.socket.on('userlist', function(userList) {
         console.log('Socket : On : userlist: ' + userList);
-        for (var i = 0; i < userList.length; i++) {
-          $scope.userScores[userList[i]] = 0;
-        }
+        $scope.userScores = userList;
         $scope.$apply();
       });
 
@@ -169,16 +172,34 @@
       //   $scope.$apply();
       // });
       
-      $scope.socket.on('startgame', function() {
+      $scope.socket.on('startgame', function(questions) {
         console.log("Socket: startgame");
+        console.log(questions);
+
+        $scope.questionNums = questions;
         $scope.startGame();
       });
-
 
       $scope.socket.on('scoreupdate', function(data) {
         console.log("Socket: scoreupdate");
         $scope.userScores[data.username] = data.score;
         $scope.$apply();
+      });
+
+      $scope.socket.on('nextq', function(data) {
+        console.log("Socket: nextq");
+        $scope.userScores = data;
+        // ??? $scope.$apply() ?
+
+        $scope.nextLoc();
+      });
+
+      $scope.socket.on('endgame', function(data) {
+        console.log("Socket: endgame");
+        $scope.userScores = data;
+        // ??? $scope.$apply() ?
+
+        $scope.endGame();
       });
     };
 
@@ -222,18 +243,22 @@
     };
 
     $scope.initiateGame = function() {
-      $scope.socket.emit('startgame');
+      $scope.socket.emit('initiategame');
     };
 
     $scope.startGame = function() {
       // start timers ...
-      console.log("TriviaController: startGame");
 
       // if ($scope.initiatedGame) {
       //   $scope.socket.emit('startgame');
       // }
-      $scope.setCountdown();
+      // initialize the question state: use the first question number
+      $scope.questionCount = 0;
+      $scope.navLoc = $scope.questionNums[$scope.questionCount];
+      console.log("TriviaController: startGame navLoc " + $scope.navLoc);
+
       $scope.gameDataInit();
+      $scope.setCountdown();
 
       $scope.$apply(function() {
         $location.path("/trivia/play"); // render play view
@@ -255,6 +280,22 @@
       }
 
       $scope.winner = currHighest;
+    };
+
+    $scope.endGame = function() {
+      // TODO: this part probably needs to change to wait
+      // for server to indicate end game
+      $scope.updateUser({
+        username: $scope.username,
+        score: $scope.score,
+        correct: $scope.correct,
+        correctStreak: $scope.correctStreak,
+        answered: $scope.answered
+      });
+
+      // calculate who won for display in the endgame view
+      $scope.highScore();
+      $location.path("/trivia/endgame"); // render endgame view
     };
 
   }]);
