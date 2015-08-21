@@ -1,13 +1,36 @@
 <div class="text-center" ng-controller="TriviaController">
 
   <br>
-  <a class="play-trivia-btn btn btn-info btn-lg btn-block"
-    ui-sref=".play"
-    ng-init="clicked=false"
-    ng-click="clicked=!clicked; setCountdown(); gameDataInit()"
-    ng-show="clicked===false">
-    Play Trivia
-  </a>
+  <!-- Toggle 'clicked' on button click to hide this view and show ui-view
+  after click -->
+  <div>
+    <a class="play-trivia-btn btn btn-default btn-raised btn-material-teal"
+      ui-sref=".startgame"
+      ng-click="newGame()"
+      ng-hide="validGameRequest">
+      Create Game
+    </a>
+  </div>
+  <br/>
+  <hr ng-hide="validGameRequest" width="50%" style="height:10px" />
+  <br/>
+  <div ng-hide="validGameRequest">
+    <form name='gameForm' novalidate>
+      <input class="form-control joinGameInput" name='gameCode' ng-model="formCode"
+        placeholder="Enter Your Game Code # Here" required />
+      <br/>
+      <a class="play-trivia-btn btn btn-default btn-raised btn-material-teal"
+        ui-sref=".startgame"
+        ng-click="joinGame()">
+        Join Game
+      </a>
+    </form>
+    <!-- Show an error message if an invalid code was entered
+    and the user hasn't updated the code field -->
+    <div ng-show="invalidGameRequest && code === formCode">
+      Invalid Game Code.
+    </div>
+  </div>
 
-  <div ng-show="clicked===true" ui-view></div>
+  <div ng-show="validGameRequest" ui-view></div>
 </div>

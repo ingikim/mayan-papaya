@@ -5,14 +5,14 @@
 
       <div class="row">
         <div class="col-md-12 text-center">
-          <h1>Final Score: {{score}}</h1>
+          <h1>Winner is {{winner[0]}} with a Score of {{winner[1]}}!</h1>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-12">
-          <a class="btn btn-default btn-lg text-center"
-            ui-sref="trivia.play"
+          <a class="btn btn-default btn-raised btn-material-teal play-trivia-btn text-center"
+            ui-sref="trivia"
             ui-sref-opts="{reload: true}"
             ng-init="clicked=false"
             ng-click="clicked=!clicked"
@@ -28,7 +28,7 @@
           <div class="row">
             <div class="endgame-summary-col col-md-6 col-md-offset-3">
 
-              <span class="lead">Game Summary</span>
+              <span class="lead">Your Game Summary</span>
               <table class="endgame-summary-table table table-hover text-left">
                 <tr>
                   <td class="col-md-8">

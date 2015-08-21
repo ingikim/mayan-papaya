@@ -1,6 +1,9 @@
 (function() {
 
   var app = angular.module('TriviaWithFriends', ['ui.router', 'Navigation', 'Footer', 'Trivia', 'Profile', 'User', 'Stats']); // need User dependency
+  app.run(function($rootScope, $location) {
+    $rootScope.location = $location;
+  });
 
   app.config ([
   '$stateProvider',
@@ -22,6 +25,11 @@
           .state('trivia.categories', {
             url: '/categories',
             templateUrl: 'views/trivia.categories.html',
+            data: { publicallyAccessible: false }
+          })
+          .state('trivia.startgame', {
+            url: '/startgame',
+            templateUrl: 'views/trivia.startgame.html',
             data: { publicallyAccessible: false }
           })
           .state('trivia.play', {
@@ -70,6 +78,8 @@
     // We add our $httpInterceptor into the array
     // of interceptors. Think of it like middleware for your ajax calls
     $httpProvider.interceptors.push('AttachTokens');
+
+    // Set up socket listeners
 
   }]);
 
